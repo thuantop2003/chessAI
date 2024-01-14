@@ -23,7 +23,7 @@ def drawboard(pg, screen):
     pg.draw.rect(screen, 'gray',[0,800,1000,100])
     pg.draw.rect(screen, 'gold',[0,800,1000,100],5)
     pg.draw.rect(screen, 'gold',[800,0,200,1000],5)
-    status_text=['white select','white move','black select','black']
+    status_text=['White select','White move','Black move','Black move']
     screen.blit(font.render(status_text[turn_selection],True,'black'),(20,820))
 def loadimage(t):
     # Fix the path string and use double backslashes or a raw string
@@ -72,19 +72,22 @@ while run:
                     for chess in board:
                         if(click_coord==chess.location):
                             board.remove(chess)
+                            break
                     for chess in board:
                         if(chess.location[0]==selection.location[0] and chess.location[1]==selection.location[1]):
                             chess.location=click_coord
-                    turn_selection=2;
+                            break
+                    turn_selection=2
+                    screen.fill('dark gray')
+                    drawboard(pg,screen)
+                    load_chess()
                     continue
                 if turn_selection==1:
                     turn_selection=0  
-                    continue
-    if turn_selection==2:
-        turn_selection=3  
-        continue
-    if turn_selection==3:
-        board=cp.makeMove(board)
-        turn_selection=0     
+                    continue 
     pg.display.flip()
+    if turn_selection==2:
+        board=cp.makeMove(board)
+        turn_selection=0
+        continue 
 pg.quit()

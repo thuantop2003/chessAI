@@ -446,29 +446,25 @@ def makeChildrenW(board):
 def pChildren(board,i,x,y):
     if i==3:
         return heuBoard(board)
-    if i==2:
+    if i%2==0:
         maxx=-10000
         for b in makeChildrenB(board):
-            if pChildren(b,3,x,y)>maxx:
-                maxx=pChildren(b,3,x,y)
+            if pChildren(b,i+1,x,y)>maxx:
+                maxx=pChildren(b,i+1,x,y)
             if maxx>=x:
                 return maxx
             if y<maxx:
                 y=maxx
-        print("max")
-        print(maxx)
         return maxx
-    if i==1:
+    if i%2==1:
         minn=10000
         for b in makeChildrenW(board):
-            if pChildren(b,2,x,y)<minn:
-                minn=pChildren(b,2,x,y)
+            if pChildren(b,i+1,x,y)<minn:
+                minn=pChildren(b,i+1,x,y)
             if minn<=y:
                 return minn
             if x>minn:
                 x=minn
-        print("min")
-        print(minn)
         return minn
 def makeMove(board):
     maxx=-10000
