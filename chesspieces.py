@@ -254,12 +254,12 @@ def BbishopValid(chess,board):
             if k1==0 and chessb.location==check1 and chessb.name[0]=="W":
                 validmove.append(check1)
                 k1=1
-            if chessb.location==check1 and chessb.name[0]=="W":
+            if chessb.location==check1 and chessb.name[0]=="B":
                 k1=1
-            if k2==0 and chessb.location==check2 and chessb.name[0]=="B":
+            if k2==0 and chessb.location==check2 and chessb.name[0]=="W":
                 validmove.append(check2)
                 k2=1
-            if chessb.location==check2 and chess.name[0]=="W":
+            if chessb.location==check2 and chess.name[0]=="B":
                 k2=1
             if k3==0 and chessb.location==check3 and chessb.name[0]=="W":
                 validmove.append(check3)
@@ -343,7 +343,6 @@ def WknightValid(chess,board):
         for chessb in board:
                 if chessb.location == move and chessb.name[0]=="W":
                     validmovess.remove(move)
-                    break
     return validmovess
 def BknightValid(chess,board):
     validmove=[]
@@ -362,7 +361,6 @@ def BknightValid(chess,board):
         for chessb in board:
                 if chessb.location == move and chessb.name[0]=="B":
                     validmovess.remove(move)
-                    break
     return validmovess
 def validmoves(chess,board):
     validmove=[]
@@ -400,13 +398,13 @@ def heuBoard(board):
     h["Wbishop"]=-3
     h["Wknight"]=-3
     h["WQueen"]=-9
-    h["WKing"]=-100
+    h["WKing"]=-1000
     h["Bpawn"]=1
     h["Brook"]=5
     h["Bbishop"]=3
     h["Bknight"]=3
     h["BQueen"]=9
-    h["BKing"]=100
+    h["BKing"]=1000
     sum=0
     for chess in board:
         sum=sum+h[chess.name]
@@ -444,33 +442,32 @@ def makeChildrenW(board):
                 children.append(board1)
     return children
 def pChildren(board,i,x,y):
-    if i==3:
-        return heuBoard(board)
-    if i%2==0:
+    if i==4:
+        return [board,heuBoard(board)]
+    if i%2==1:
         maxx=-10000
         for b in makeChildrenB(board):
-            if pChildren(b,i+1,x,y)>maxx:
-                maxx=pChildren(b,i+1,x,y)
+            if pChildren(b,i+1,x,y)[1]>maxx:
+                maxx=pChildren(b,i+1,x,y)[1]
+                sb=b
             if maxx>=x:
-                return maxx
+                return [sb,maxx]
             if y<maxx:
                 y=maxx
-        return maxx
-    if i%2==1:
+        return [sb,maxx]
+    if i%2==0:
         minn=10000
         for b in makeChildrenW(board):
-            if pChildren(b,i+1,x,y)<minn:
-                minn=pChildren(b,i+1,x,y)
+            if pChildren(b,i+1,x,y)[1]<minn:
+                minn=pChildren(b,i+1,x,y)[1]
+                sb=b
             if minn<=y:
-                return minn
+                return [sb,minn]
             if x>minn:
                 x=minn
-        return minn
+        return [sb,minn]
 def makeMove(board):
-    maxx=-10000
-    for b in makeChildrenB(board):
-        if(pChildren(b,1,1000,-1000)>maxx):
-            maxx=pChildren(b,1,1000,-1000)
-            sboard=b
+    x=pChildren(board,1,1000,-1000)
+    sboard=x[0]
     return sboard
 
