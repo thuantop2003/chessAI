@@ -442,15 +442,16 @@ def makeChildrenW(board):
                 children.append(board1)
     return children
 def pChildren(board,i,x,y):
-    if i==4:
+    if i==3:
         return [board,heuBoard(board)]
     if i%2==1:
         maxx=-10000
         for b in makeChildrenB(board):
             if(heuBoard(b)>500):
                 return [b,heuBoard(b)]
-            if pChildren(b,i+1,x,y)[1]>maxx:
-                maxx=pChildren(b,i+1,x,y)[1]
+            a=pChildren(b,i+1,x,y)[1]
+            if a>maxx:
+                maxx=a
                 sb=b
             if maxx>=x:
                 return [sb,maxx]
@@ -462,8 +463,9 @@ def pChildren(board,i,x,y):
         for b in makeChildrenW(board):
             if(heuBoard(b)<-500):
                 return [b,heuBoard(b)]
-            if pChildren(b,i+1,x,y)[1]<minn:
-                minn=pChildren(b,i+1,x,y)[1]
+            a=pChildren(b,i+1,x,y)[1]
+            if a<minn:
+                minn=a
                 sb=b
             if minn<=y:
                 return [sb,minn]
