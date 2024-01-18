@@ -27,7 +27,7 @@ def drawboard(pg, screen):
     screen.blit(font.render(status_text[turn_selection],True,'black'),(20,820))
 def loadimage(t):
     # Fix the path string and use double backslashes or a raw string
-    image_path = r"C:\Users\Lenovo\Desktop\project1\chesscode\image\\" + t.name + ".png"
+    image_path = r"C:\Users\Lenovo\Desktop\project1\chessBotvsBot\image\\" + t.name + ".png"
     a = pg.image.load(image_path)
     
     if t.name == "Wpawn" or t.name == "Bpawn":
