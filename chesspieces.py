@@ -462,11 +462,14 @@ def pChildren(board,i,x,y):
         return [sb,maxx]
     if i%2==0:
         minn=10000
+        sb=board
         for b in makeChildrenW(board):
             if(heuBoard(b)<-500):
-                return [b,heuBoard(b)]
+                sb=b
+                return [sb,heuBoard(b)]
             if(heuBoard(b)>500):
-                return [b,heuBoard(b)]
+                sb=b
+                return [sb,heuBoard(b)]
             a=pChildren(b,i+1,x,y)[1]
             if a<minn:
                 minn=a

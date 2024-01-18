@@ -40,34 +40,46 @@ def load_chess():
     for chess in board:
         loadimage(chess)
 valid_moves=[]
+def draw_game_over():
+    text=font.render(f'{winner} won the game', True,'blue')
+    text2=font.render(f'press Enter to restart', True,'blue')
+    screen.blit(text,(210,210))
+    screen.blit(text2,(210,310))
+def checking():
+    a=0
+    b=0
+    for p in board:
+        if p.name=="WKing":
+            a=1
+        if p.name=="BKing":
+            b=1
+    return [a,b]
 while run:
     timer.tick(fps)
     screen.fill('dark gray')
     drawboard(pg,screen)
     load_chess()
-    a=0
-    for p in board:
-        if(p.name=="WKing" or p.name=="BKing"):
-            a=1
-    if a==0:
-        break
+    time.sleep(0.5)
+    if checking()[0]==0 or checking()[1]==0:
+        if(checking()[0]==0):
+            winner="Black"
+        else:
+            winner="White"
+        draw_game_over()
     for event in pg.event.get():
         if event.type == pg.QUIT:
             run = False
-    if turn_selection==0:
+        if event.type==pg.KEYDOWN and (checking()[0]==0 or checking()[1]==0):
+            if event.key==pg.K_RETURN:
+                board=board=cp.makeBoard()
+                turn_selection=0
+    if turn_selection==0 and (checking()[0]!=0 and checking()[1]!=0):
         board=cp.makeMoveW(board)
-        screen.fill('dark gray')
-        drawboard(pg,screen)
-        load_chess()
-        time.sleep(0.5)
         turn_selection=2
         continue 
     pg.display.flip()
-    if turn_selection==2:
+    if turn_selection==2 and (checking()[0]!=0 and checking()[1]!=0):
         board=cp.makeMove(board)
-        screen.fill('dark gray')
-        drawboard(pg,screen)
-        load_chess()
         turn_selection=0
         continue 
 pg.quit()
