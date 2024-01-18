@@ -45,49 +45,29 @@ while run:
     screen.fill('dark gray')
     drawboard(pg,screen)
     load_chess()
+    a=0
+    for p in board:
+        if(p.name=="WKing" or p.name=="BKing"):
+            a=1
+    if a==0:
+        break
     for event in pg.event.get():
         if event.type == pg.QUIT:
             run = False
-        if event.type == pg.MOUSEBUTTONDOWN and event.button ==1:
-            x_coord=event.pos[0]//100
-            y_coord=event.pos[1]//100
-            click_coord=[8-y_coord,8-x_coord]
-            if turn_selection==0:
-                #print(turn_selection)
-                for chess in board: 
-                    if(chess.location==click_coord and chess.name[0]=="W"):
-                        selection = chess
-                        turn_selection=1
-                        valid_moves=cp.validmoves(selection,board)
-                        #print(valid_moves)
-                        break
-                continue
-            if turn_selection==1:
-                #print(selection.name, selection.location)
-                #print(turn_selection)
-                #print(valid_moves)
-                #print(click_coord)
-                print("next")
-                if click_coord in valid_moves :
-                    for chess in board:
-                        if(click_coord==chess.location):
-                            board.remove(chess)
-                            break
-                    for chess in board:
-                        if(chess.location[0]==selection.location[0] and chess.location[1]==selection.location[1]):
-                            chess.location=click_coord
-                            break
-                    turn_selection=2
-                    screen.fill('dark gray')
-                    drawboard(pg,screen)
-                    load_chess()
-                    continue
-                if turn_selection==1:
-                    turn_selection=0  
-                    continue 
+    if turn_selection==0:
+        board=cp.makeMoveW(board)
+        screen.fill('dark gray')
+        drawboard(pg,screen)
+        load_chess()
+        time.sleep(0.5)
+        turn_selection=2
+        continue 
     pg.display.flip()
     if turn_selection==2:
         board=cp.makeMove(board)
+        screen.fill('dark gray')
+        drawboard(pg,screen)
+        load_chess()
         turn_selection=0
         continue 
 pg.quit()
